@@ -73,8 +73,7 @@ with tab3:
             st.subheader(quarter)
             avg_val = quarter_average(branches, quarter)
             st.write(f"평균: {avg_val:.1f}백만원")
-            top = quarter_top(branches, quarter)
-            st.write(f"최고: {top['지점']} ({top[quarter]}백만원)")
+            st.write(f"최고: {quarter_top(branches, quarter)}")
 
     chart_data = []
     for quarter in QUARTERS:

@@ -62,7 +62,7 @@ def grade_distribution(branches):
 
 def rank_list(branches):
     """총매출 기준 정렬."""
-    return sorted(branches, key=lambda x: total_sales(x))
+    return sorted(branches, key=lambda x: total_sales(x), reverse=True)
 
 
 def achievement_rate(branches, target=90):

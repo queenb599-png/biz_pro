@@ -12,7 +12,7 @@ def total_sales(branch):
 
 def average_sales(branch):
     """지점 평균."""
-    return total_sales(branch) / len(branch)
+    return total_sales(branch) / 3
 
 
 def to_grade(avg):

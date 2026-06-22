@@ -60,14 +60,17 @@ css_content = textwrap.dedent("""
             background: linear-gradient(135deg, #E6D070 0%, #947A26 100%);
         }
         
-        /* 라디오 버튼 탭 스타일링 - 가운데 정렬 보강 */
+        /* ---------------------------------------------------- */
+        /* 1. 상단 4개 메인 탭(라디오 버튼) 완벽한 가운데 정렬 적용 */
+        /* ---------------------------------------------------- */
         div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child:not([data-testid="stMarkdownContainer"]) {
             display: none !important;
         }
         
         div[data-testid="stRadio"] {
             display: flex !important;
-            justify-content: center !important; /* 상위 컨테이너부터 가운데 정렬 */
+            justify-content: center !important; 
+            width: 100% !important;
         }
         
         div[data-testid="stRadio"] > div {
@@ -78,17 +81,16 @@ css_content = textwrap.dedent("""
             border-radius: 0 !important;
             padding: 0 !important;
             gap: 0 !important;
-            justify-content: center !important; /* 내부 요소 가운데 정렬 */
+            justify-content: center !important; 
             align-items: center !important;
             display: flex !important;
-            margin-bottom: 40px !important;
+            margin: 0 auto 40px auto !important;
             flex-wrap: nowrap !important;
-            overflow-x: auto !important;
-            width: 100% !important;
+            width: 100% !important; 
         }
         
         div[data-testid="stRadio"] label {
-            padding: 15px 20px !important;
+            padding: 10px 15px !important;
             background: transparent !important;
             border-radius: 0 !important;
             border-bottom: 2px solid transparent !important;
@@ -96,11 +98,12 @@ css_content = textwrap.dedent("""
             transition: all 0.4s ease !important;
             cursor: pointer !important;
             white-space: nowrap !important;
+            flex: 0 1 auto !important;
         }
         
         div[data-testid="stRadio"] label p {
             font-family: 'Noto Serif KR', serif !important;
-            font-size: 16px !important;
+            font-size: 15px !important;
             font-weight: 400 !important;
             color: #999999 !important;
             letter-spacing: 1px !important;
@@ -119,11 +122,14 @@ css_content = textwrap.dedent("""
             color: #D4AF37 !important;
         }
         
-        /* 세부 탭 (st.tabs) 디자인 및 가운데 정렬 */
-        div[data-testid="stTabs"] > div:first-of-type {
-            justify-content: center !important; /* 탭 리스트 자체를 가운데 정렬 */
+        /* ---------------------------------------------------- */
+        /* 2. 두 번째 탭 안의 세부 탭들(st.tabs) 완벽한 가운데 정렬 */
+        /* ---------------------------------------------------- */
+        div[data-testid="stTabs"] *[role="tablist"] {
+            justify-content: center !important; 
             display: flex !important;
-            width: 100% !important;
+            margin: 0 auto !important;
+            width: max-content !important; /* 탭 리스트 너비를 자식 크기에 맞추고 가운데 정렬 */
         }
         
         div[data-testid="stTabs"] button[data-baseweb="tab"] {
@@ -131,7 +137,8 @@ css_content = textwrap.dedent("""
             font-size: 16px !important;
             padding-top: 10px !important;
             padding-bottom: 10px !important;
-            flex: 0 1 auto !important; /* 버튼이 필요 이상으로 늘어나지 않게 설정 */
+            flex: 0 1 auto !important; 
+            margin: 0 10px !important; /* 세부 탭 버튼들 사이의 간격 */
         }
         
         /* 카드 디자인 */
@@ -173,27 +180,16 @@ css_content = textwrap.dedent("""
             text-transform: uppercase;
         }
         
+        /* 내용 가운데 정렬을 위해 text-align: center 적용 */
         .fortune-text {
             color: #444444;
             font-size: 17px;
             line-height: 1.8;
             font-weight: 300;
-            text-align: justify;
+            text-align: center;
             word-break: keep-all;
-        }
-        
-        .sub-title {
-            color: #AA7C11;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .sub-title::before {
-            content: '✦';
-            font-size: 14px;
+            margin: 0 auto;
+            max-width: 650px;
         }
         
         div[data-baseweb="input"] {
@@ -282,16 +278,15 @@ selected_tab = st.radio("메뉴", tabs, horizontal=True, key="active_tab", label
 
 # ================= TAB 1: 정보 입력 =================
 if selected_tab == "정보 입력":
-    header_html = textwrap.dedent("""
-        <div class="luxury-card">
-            <div class="luxury-header">
-                <p class="serif">Destiny Analysis</p>
-                <div class="luxury-header-main serif">정보 입력</div>
-                <div style="color:#888; font-size:15px; margin-top:10px; font-weight:300;">당신의 정확한 사주 풀이를 위해 태어난 시간을 알려주십시오.</div>
-            </div>
+    render_html("""
+        <div class="luxury-header" style="margin-top:20px;">
+            <p class="serif">Destiny Analysis</p>
+            <div class="luxury-header-main serif">정보 입력</div>
+            <div style="color:#888; font-size:15px; margin-top:10px; font-weight:300;">당신의 정확한 사주 풀이를 위해 태어난 시간을 알려주십시오.</div>
+        </div>
     """)
-    st.markdown(header_html, unsafe_allow_html=True)
     
+    st.write("")
     col1, col2 = st.columns(2)
     with col1:
         st.date_input("생년월일", min_value=datetime.date(1900, 1, 1), max_value=datetime.date.today(), key="birth_date")
@@ -301,11 +296,6 @@ if selected_tab == "정보 입력":
     st.write("")
     st.write("")
     st.button("내 운명 확인하기", on_click=on_check_fortune, use_container_width=True)
-    
-    footer_html = textwrap.dedent("""
-        </div>
-    """)
-    st.markdown(footer_html, unsafe_allow_html=True)
 
 # ================= TAB 2: 운세 분석 =================
 elif selected_tab == "운세 분석":
@@ -337,22 +327,22 @@ elif selected_tab == "운세 분석":
         future_fortune = random.choice(future_list)
         job_fortune = random.choice(job_list)
         
-        fortune_html = textwrap.dedent("""
+        render_html("""
             <div class="luxury-header" style="margin-top:20px;">
                 <p class="serif">Destiny Report</p>
                 <div class="luxury-header-main serif">운세 분석</div>
             </div>
         """)
-        st.markdown(fortune_html, unsafe_allow_html=True)
         
+        # 세부 탭들
         sub_tabs = st.tabs(["✨ 운세 총평", "🚀 미래 전망", "💼 타고난 재능과 직업"])
         
         with sub_tabs[0]:
-            render_html(f'<div class="luxury-card" style="margin-top:20px;"><p class="fortune-text">{overall_fortune}</p></div>')
+            render_html(f'<div class="luxury-card" style="margin-top:20px; text-align:center;"><p class="fortune-text">{overall_fortune}</p></div>')
         with sub_tabs[1]:
-            render_html(f'<div class="luxury-card" style="margin-top:20px;"><p class="fortune-text">{future_fortune}</p></div>')
+            render_html(f'<div class="luxury-card" style="margin-top:20px; text-align:center;"><p class="fortune-text">{future_fortune}</p></div>')
         with sub_tabs[2]:
-            render_html(f'<div class="luxury-card" style="margin-top:20px;"><p class="fortune-text">{job_fortune}</p></div>')
+            render_html(f'<div class="luxury-card" style="margin-top:20px; text-align:center;"><p class="fortune-text">{job_fortune}</p></div>')
             
         random.seed()
 
@@ -360,14 +350,13 @@ elif selected_tab == "운세 분석":
 elif selected_tab == "오늘의 별자리":
     today = datetime.date.today()
     
-    header_html = textwrap.dedent(f"""
+    render_html(f"""
         <div class="luxury-header" style="margin-top:20px;">
             <p class="serif">Daily Horoscope</p>
             <div class="luxury-header-main serif">오늘의 별자리</div>
             <div style="color:#888; font-size:14px; font-weight:300;">{today.strftime('%Y. %m. %d')} 기준</div>
         </div>
     """)
-    st.markdown(header_html, unsafe_allow_html=True)
     
     zodiacs = ["물병자리", "물고기자리", "양자리", "황소자리", "쌍둥이자리", "게자리", "사자자리", "처녀자리", "천칭자리", "전갈자리", "사수자리", "염소자리"]
     random.seed(today.toordinal())
@@ -389,34 +378,31 @@ elif selected_tab == "오늘의 별자리":
     c3, i3 = get_lucky_info()
     
     with col1:
-        c1_html = textwrap.dedent(f"""
+        render_html(f"""
             <div style="background: #FFFFFF; padding: 30px 20px; border-radius: 4px; text-align: center; border: 1px solid #EAEAEA; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
                 <div style="font-family:'Noto Serif KR', serif; font-size: 16px; color: #999; margin-bottom:10px;">2nd Place</div>
                 <div class="serif" style="margin: 0 0 20px 0; font-size:22px; color:#1A1A1A; font-weight:bold;">{shuffled_zodiacs[1]}</div>
                 <p style="margin:0; font-size:14px; color:#666; font-weight:300;">행운의 색상: <b>{c2}</b><br>행운의 아이템: <b>{i2}</b></p>
             </div>
         """)
-        st.markdown(c1_html, unsafe_allow_html=True)
         
     with col2: 
-        c2_html = textwrap.dedent(f"""
+        render_html(f"""
             <div style="background: #FFFFFF; padding: 40px 20px; border-radius: 4px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.5); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.1); transform: translateY(-10px);">
                 <div style="font-family:'Noto Serif KR', serif; font-size: 18px; color: #D4AF37; margin-bottom:10px; font-weight:600;">1st Place ✦</div>
                 <div class="serif" style="margin: 0 0 20px 0; font-size:26px; color:#1A1A1A; font-weight:bold;">{shuffled_zodiacs[0]}</div>
                 <p style="margin:0; font-size:14px; color:#666; font-weight:300;">행운의 색상: <b>{c1}</b><br>행운의 아이템: <b>{i1}</b></p>
             </div>
         """)
-        st.markdown(c2_html, unsafe_allow_html=True)
         
     with col3:
-        c3_html = textwrap.dedent(f"""
+        render_html(f"""
             <div style="background: #FFFFFF; padding: 30px 20px; border-radius: 4px; text-align: center; border: 1px solid #EAEAEA; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
                 <div style="font-family:'Noto Serif KR', serif; font-size: 16px; color: #999; margin-bottom:10px;">3rd Place</div>
                 <div class="serif" style="margin: 0 0 20px 0; font-size:22px; color:#1A1A1A; font-weight:bold;">{shuffled_zodiacs[2]}</div>
                 <p style="margin:0; font-size:14px; color:#666; font-weight:300;">행운의 색상: <b>{c3}</b><br>행운의 아이템: <b>{i3}</b></p>
             </div>
         """)
-        st.markdown(c3_html, unsafe_allow_html=True)
 
     st.write("")
     st.write("")
@@ -431,48 +417,41 @@ elif selected_tab == "오늘의 별자리":
         border_style = "border-bottom: 1px solid #F0F0F0;" if i < 11 else ""
         text_color = "#999999" if rank == 12 else "#444444"
         
-        row_html = textwrap.dedent(f"""
+        render_html(f"""
             <div style="padding: 15px 10px; {border_style} display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-weight: 500; font-size: 17px; color: {text_color};"><span style="display:inline-block; width:40px; font-family:'Noto Serif KR', serif; color:#AA7C11;">{rank}.</span> {zodiac}</div>
                 <div style="font-size: 15px; color: #777; font-weight:300;">컬러: <b style="color:#444;">{c}</b> &nbsp;&nbsp;|&nbsp;&nbsp; 아이템: <b style="color:#444;">{item}</b></div>
             </div>
         """)
-        st.markdown(row_html, unsafe_allow_html=True)
         
     st.markdown("</div>", unsafe_allow_html=True)
     random.seed()
 
 # ================= TAB 4: 포춘 쿠키 =================
 elif selected_tab == "포춘 쿠키":
-    cookie_header_html = textwrap.dedent("""
+    render_html("""
         <div class="luxury-header" style="margin-top:20px;">
             <p class="serif">Fortune Cookie</p>
             <div class="luxury-header-main serif">포춘 쿠키</div>
         </div>
     """)
-    st.markdown(cookie_header_html, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
         if not st.session_state.cookie_broken:
-            cookie_html = textwrap.dedent("""
+            render_html("""
                 <div style="text-align: center; padding: 50px 0; animation: float 4s ease-in-out infinite;">
                     <span style="font-size: 130px; filter: drop-shadow(0 20px 30px rgba(212, 175, 55, 0.2)); line-height: 1;">🥠</span>
                 </div>
             """)
-            st.markdown(cookie_html, unsafe_allow_html=True)
-            
             st.button("메시지 확인하기", on_click=break_cookie, use_container_width=True)
         else:
-            broken_html = textwrap.dedent("""
+            render_html(f"""
                 <div style="position: relative; width: 130px; height: 130px; margin: 0 auto; margin-top: 30px;">
                     <div class="cookie-left" style="font-size: 130px; position: absolute; left: 0; top: 0; line-height: 1;">🥠</div>
                     <div class="cookie-right" style="font-size: 130px; position: absolute; left: 0; top: 0; line-height: 1;">🥠</div>
                 </div>
-            """)
-            st.markdown(broken_html, unsafe_allow_html=True)
-            
-            msg_html = textwrap.dedent(f"""
+                
                 <div class="msg-reveal">
                     <div class="luxury-card" style="padding: 40px; text-align: center; margin-bottom: 30px; border-top: 3px solid #D4AF37;">
                         <p class="serif" style="font-size: 20px; color: #1A1A1A; line-height: 2.0; word-break: keep-all;">
@@ -481,7 +460,5 @@ elif selected_tab == "포춘 쿠키":
                     </div>
                 </div>
             """)
-            st.markdown(msg_html, unsafe_allow_html=True)
-            
             st.write("")
             st.button("새로운 메시지 받기", on_click=reset_cookie, use_container_width=True)

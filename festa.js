@@ -116,11 +116,11 @@ const rewardsData = [
     },
     {
         id: 'local_rice_10k',
-        title: '청정 화천 오대쌀 4kg 교환권',
+        title: '화천 물빛누리쌀 10kg 교환권',
         price: 3000,
-        img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=300',
+        img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/rice.png?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',
-        desc: '화천 명품 특산품 협동조합에서 직송되는 유기농 친환경 오대쌀입니다.'
+        desc: '화천 명품 특산품 협동조합에서 직송되는 유기농 친환경 물빛누리쌀입니다.'
     }
 ];
 

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FestGO - 축제 스탬프 투어 & 버스 예약</title>
+    <!-- Google Fonts: Outfit & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Inline stylesheets will be placed here -->
+    <link rel="stylesheet" href="festa.css">
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- App Container -->
+        <div class="app-container">
+            <!-- Glass Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <div class="app-logo">
+                        <i data-lucide="sparkles" class="logo-sparkle"></i>
+                        <span>Fest<span>GO</span></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="points-badge" id="headerPointsBtn">
+                        <i data-lucide="database"></i>
+                        <span id="headerPoints">1500</span><span class="p-unit">P</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Panels (Only one visible at a time) -->
+            <main class="app-main">
+                
+                <!-- TAB 1: HOME (MAIN) -->
+                <section id="tab-home" class="tab-panel active">
+                    <div class="welcome-banner">
+                        <div class="welcome-text">
+                            <h3>어디로 떠나볼까요? 🗺️</h3>
+                            <p>전국의 숨겨진 축제와 모험이 기다립니다</p>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Festival (Featured Hwacheon) -->
+                    <div class="section-title">
+                        <h4>🔥 지금 가장 뜨거운 축제 추천</h4>
+                    </div>
+                    
+                    <div class="featured-card">
+                        <div class="featured-image" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(15,23,42,0.95) 100%), url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&q=80&w=800');">
+                            <div class="featured-tag">실시간 스탬프 진행중</div>
+                            <div class="featured-details">
+                                <span class="festival-region">강원도 화천군</span>
+                                <h3 class="festival-title">2026 화천산천어축제</h3>
+                                <p class="festival-desc">얼음판 위에서 펼쳐지는 짜릿한 손맛! 산천어 낚시와 화려한 선등거리 불빛 축제를 즐겨보세요.</p>
+                                <div class="featured-info">
+                                    <span><i data-lucide="calendar"></i> 1월~2월 운영</span>
+                                    <span><i data-lucide="award"></i> 3개 스탬프 퀘스트</span>
+                                </div>
+                                <div class="featured-actions">
+                                    <button class="btn btn-primary" onclick="switchTab('tab-map')">
+                                        <i data-lucide="map-pin"></i> 스탬프 시작
+                                    </button>
+                                    <button class="btn btn-glass" id="openBookingBtn">
+                                        <i data-lucide="bus"></i> 셔틀 예약
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nationwide Connected Festivals list -->
+                    <div class="section-title">
+                        <h4>🌐 전국구 연결 연계 축제</h4>
+                        <span class="view-all" onclick="openNationwideMap()">전체보기</span>
+                    </div>
+
+                    <div class="festival-scroll">
+                        <div class="f-item" onclick="alert('화천산천어축제 외의 축제는 추후 오픈 예정입니다! 현재 화천산천어축제 스탬프 투어를 즐겨보세요.')">
+                            <div class="f-img" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=300');"></div>
+                            <div class="f-info">
+                                <h5>보령 머드 축제</h5>
+                                <span class="tag tag-summer">여름</span>
+                            </div>
+                        </div>
+                        <div class="f-item" onclick="alert('화천산천어축제 외의 축제는 추후 오픈 예정입니다!')">
+                            <div class="f-img" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=300');"></div>
+                            <div class="f-info">
+                                <h5>부산 불꽃 축제</h5>
+                                <span class="tag tag-autumn">가을</span>
+                            </div>
+                        </div>
+                        <div class="f-item" onclick="alert('화천산천어축제 외의 축제는 추후 오픈 예정입니다!')">
+                            <div class="f-img" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=300');"></div>
+                            <div class="f-info">
+                                <h5>경주 벚꽃 축제</h5>
+                                <span class="tag tag-spring">봄</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In-app Bus Promo Card -->
+                    <div class="bus-promo-card">
+                        <div class="promo-content">
+                            <span class="promo-badge">연결성 극대화</span>
+                            <h4>직통 셔틀버스로 차 없이 축제장까지!</h4>
+                            <p>주차난 걱정 없이 편안하게 왕복 운행 버스를 이용하세요. 스탬프 인증 시 버스 할인권이 100% 쏟아집니다.</p>
+                            <button class="btn btn-white" id="openBookingBtn2">지금 좌석 예약하기 <i data-lucide="arrow-right"></i></button>
+                        </div>
+                        <div class="promo-icon-box">
+                            <i data-lucide="bus" class="bus-icon-glow"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: MAP (STAMP MAP) -->
+                <section id="tab-map" class="tab-panel">
+                    <div class="map-wrapper-layout">
+                        <!-- Simulated GPS Controller Overlay -->
+                        <div class="gps-simulator-bar glass-card">
+                            <div class="sim-header">
+                                <span class="pulse-red">●</span>
+                                <strong>개발자용 GPS 시뮬레이션</strong>
+                            </div>
+                            <div class="sim-body">
+                                <select id="simLocationSelect">
+                                    <option value="user-default">내 위치 (화천 외곽)</option>
+                                    <option value="fishing">퀘스트 1: 얼음낚시터 (거리 10m)</option>
+                                    <option value="lantern">퀘스트 2: 선등거리 (거리 8m)</option>
+                                    <option value="plaza">퀘스트 3: 실내얼음광장 (거리 15m)</option>
+                                </select>
+                                <button class="btn btn-sm btn-primary" id="simGPSBtn">시뮬레이션 이동</button>
+                            </div>
+                        </div>
+
+                        <!-- Recenter & Zoom status -->
+                        <button class="map-action-btn recenter-btn" id="recenterMapBtn" title="내 위치로">
+                            <i data-lucide="locate-fixed"></i>
+                        </button>
+
+                        <div id="map"></div>
+                        
+                        <!-- Mini Spot Dashboard -->
+                        <div class="map-status-overlay glass-card">
+                            <div class="status-info">
+                                <span class="lbl">현재 위치 시뮬레이터</span>
+                                <span id="currentCoordsTxt" class="val">위치 데이터 수집 중...</span>
+                            </div>
+                            <div class="status-action" id="gpsCheckInArea">
+                                <button class="btn btn-secondary disabled" id="gpsCheckInBtn" disabled>
+                                    <i data-lucide="navigation"></i> 퀘스트 영역 밖임
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: QUESTS -->
+                <section id="tab-quests" class="tab-panel">
+                    <div class="quest-page-header">
+                        <h2>화천산천어축제 퀘스트 🎣</h2>
+                        <p>각 스팟의 퀘스트를 달성하여 스탬프를 찍고 리워드 포인트를 획득하세요.</p>
+                        
+                        <div class="total-quest-progress">
+                            <div class="progress-info">
+                                <span>나의 퀘스트 진행도</span>
+                                <strong id="questProgressRatio">0 / 3</strong>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" id="questProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quests Container -->
+                    <div class="quests-container" id="questsList">
+                        <!-- Quests injected by JS -->
+                    </div>
+                </section>
+
+                <!-- TAB 4: REWARD SHOP -->
+                <section id="tab-rewards" class="tab-panel">
+                    <div class="reward-page-header">
+                        <div class="points-summary glass-card">
+                            <span>보유 포인트</span>
+                            <h2 id="rewardsTabPoints">1,500 P</h2>
+                            <p>축제 스탬프 퀘스트를 완료해 포인트를 적립하세요!</p>
+                        </div>
+                    </div>
+
+                    <div class="section-title">
+                        <h4>🎁 포인트 상품 교환소</h4>
+                    </div>
+
+                    <div class="rewards-grid" id="rewardsContainer">
+                        <!-- Rewards injected by JS -->
+                    </div>
+                </section>
+
+                <!-- TAB 5: MY PAGE -->
+                <section id="tab-mypage" class="tab-panel">
+                    <div class="mypage-header">
+                        <div class="profile-card">
+                            <div class="profile-avatar">
+                                <i data-lucide="user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h4>홍길동 님</h4>
+                                <span class="profile-badge"><i data-lucide="crown"></i> <span id="userLevelTitle">Level 1 초보 모험가</span></span>
+                            </div>
+                        </div>
+                        <!-- XP progress bar -->
+                        <div class="xp-progress-section" style="margin-top: 12px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.06); padding: 8px 12px; border-radius: 10px;">
+                            <div class="xp-text" style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; color: #475569; margin-bottom: 4px;">
+                                <span>EXP <span id="myPageXPTxt">0 / 100</span></span>
+                                <span id="myPageLevelTxt">LV.1</span>
+                            </div>
+                            <div class="xp-bar-container" style="height: 6px; background: rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden;">
+                                <div class="xp-bar-fill" id="myPageXPBar" style="width: 0%; height: 100%; background: linear-gradient(95deg, #a855f7, #ec4899); transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <span class="stat-lbl">내 포인트 (Gold)</span>
+                                <strong id="myPagePoints">1,500 P</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-lbl">완료 퀘스트</span>
+                                <strong id="myPageCompletedCount">0 / 3</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stamp Book Section -->
+                    <div class="mypage-section-card">
+                        <h4 class="section-card-title"><i data-lucide="award"></i> 화천산천어축제 스탬프 북</h4>
+                        <div class="stamp-book-grid" id="stampBookGrid">
+                            <!-- Stamps generated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Booked Shuttle Tickets -->
+                    <div class="mypage-section-card">
+                        <h4 class="section-card-title"><i data-lucide="bus"></i> 내 버스 탑승권 내역</h4>
+                        <div class="booked-tickets-list" id="bookedTicketsList">
+                            <!-- Injected by JS or empty state -->
+                            <div class="empty-tickets">
+                                <i data-lucide="ticket" class="empty-icon"></i>
+                                <p>예약된 버스 탑승권이 없습니다.</p>
+                                <button class="btn btn-sm btn-primary" onclick="openBookingWizard()">버스 예약하기</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coupons List -->
+                    <div class="mypage-section-card">
+                        <h4 class="section-card-title"><i data-lucide="gift"></i> 교환한 모바일 쿠폰함</h4>
+                        <div class="coupons-list" id="myCouponsList">
+                            <!-- Coupons injected by JS or empty state -->
+                            <div class="empty-coupons">
+                                <p>보유 중인 교환권이 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="app-nav">
+                <button class="nav-btn active" data-tab="tab-home" onclick="switchTab('tab-home')">
+                    <i data-lucide="home"></i>
+                    <span>추천</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-map" onclick="switchTab('tab-map')">
+                    <i data-lucide="map"></i>
+                    <span>지도</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-quests" onclick="switchTab('tab-quests')">
+                    <i data-lucide="check-square"></i>
+                    <span>퀘스트</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-rewards" onclick="switchTab('tab-rewards')">
+                    <i data-lucide="shopping-bag"></i>
+                    <span>리워드</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-mypage" onclick="switchTab('tab-mypage')">
+                    <i data-lucide="user"></i>
+                    <span>마이</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- ==================== MODALS & DIALOGS ==================== -->
+
+        <!-- 1. Bus Reservation Wizard Modal -->
+        <div class="modal-overlay" id="bookingModal">
+            <div class="modal-card booking-wizard-card glass-card">
+                <div class="modal-header">
+                    <h3><i data-lucide="bus"></i> 셔틀버스 실시간 예약</h3>
+                    <button class="modal-close-btn" id="closeBookingBtn1"><i data-lucide="x"></i></button>
+                </div>
+                
+                <!-- Wizard Steps Indicator -->
+                <div class="wizard-steps">
+                    <div class="w-step active" id="wStep1">1. 노선/일정</div>
+                    <div class="w-step" id="wStep2">2. 좌석 선택</div>
+                    <div class="w-step" id="wStep3">3. 결제/완료</div>
+                </div>
+
+                <div class="wizard-content">
+                    <!-- Step 1: Schedule Selection -->
+                    <div class="wizard-pane active" id="wizardPane1">
+                        <div class="input-group">
+                            <label>출발지 선택</label>
+                            <select id="busDeparture">
+                                <option value="서울 동서울 터미널">서울 동서울 터미널</option>
+                                <option value="인천 종합 터미널">인천 종합 터미널</option>
+                                <option value="ITX 춘천역 광장">ITX 춘천역 광장</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>목적지 선택</label>
+                            <select id="busDestination" disabled>
+                                <option value="화천 산천어축제 행사장">화천 산천어축제 행사장 (직통)</option>
+                            </select>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>출발 일자</label>
+                                <input type="date" id="busDate" value="2026-06-25">
+                            </div>
+                            <div class="input-group">
+                                <label>시간대</label>
+                                <select id="busTime">
+                                    <option value="08:00 출발">08:00 출발 (10:00 도착)</option>
+                                    <option value="10:00 출발">10:00 출발 (12:00 도착)</option>
+                                    <option value="13:00 출발">13:00 출발 (15:00 도착)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bus-fare-banner">
+                            <span>편도 요금</span>
+                            <strong>15,000 원</strong>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="goToStep2Btn">좌석 선택하러 가기 <i data-lucide="arrow-right"></i></button>
+                    </div>
+
+                    <!-- Step 2: Seat Picker -->
+                    <div class="wizard-pane" id="wizardPane2">
+                        <div class="seat-picker-header">
+                            <span class="seat-legend"><span class="seat-sample seat-available"></span> 선택 가능</span>
+                            <span class="seat-legend"><span class="seat-sample seat-taken"></span> 예약 완료</span>
+                            <span class="seat-legend"><span class="seat-sample seat-selected"></span> 선택됨</span>
+                        </div>
+                        <div class="bus-layout">
+                            <div class="driver-wheel"><i data-lucide="shield-alert"></i> 운전석</div>
+                            <div class="seats-grid" id="busSeatsGrid">
+                                <!-- 28 seats injected via JS -->
+                            </div>
+                        </div>
+                        <div class="seat-selection-summary">
+                            <span id="selectedSeatsTxt">선택된 좌석: 없음</span>
+                            <strong id="totalFareTxt">총 0 원</strong>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn btn-glass" id="backToStep1Btn"><i data-lucide="arrow-left"></i> 이전</button>
+                            <button class="btn btn-primary" id="goToStep3Btn" disabled>예약 완료하기</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirmation -->
+                    <div class="wizard-pane text-center" id="wizardPane3">
+                        <div class="success-icon-wrapper">
+                            <i data-lucide="check-circle" class="success-check-icon"></i>
+                        </div>
+                        <h3>셔틀버스 예약 성공!</h3>
+                        <p>성공적으로 탑승권 발권이 완료되었습니다.</p>
+                        <div class="booked-summary-card">
+                            <div class="row"><span class="label">출발</span><span class="val" id="ticketDepVal">서울 동서울</span></div>
+                            <div class="row"><span class="label">도착</span><span class="val">화천 산천어축제장</span></div>
+                            <div class="row"><span class="label">일시</span><span class="val" id="ticketDateVal">2026-06-25 08:00</span></div>
+                            <div class="row"><span class="label">좌석</span><span class="val" id="ticketSeatVal">7번</span></div>
+                        </div>
+                        <p class="ticket-tip">마이페이지 > '내 버스 탑승권 내역'에서 모바일 QR 코드를 확인하실 수 있습니다.</p>
+                        <button class="btn btn-primary btn-block" id="bookingSuccessFinishBtn">확인 완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Quest Action Modal (Uniform format: Quiz, Photo verification options) -->
+        <div class="modal-overlay" id="questModal">
+            <div class="modal-card quest-action-card glass-card">
+                <div class="modal-header">
+                    <h3 id="questModalTitle">퀘스트 미션 수행</h3>
+                    <button class="modal-close-btn" id="closeQuestBtn"><i data-lucide="x"></i></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Current Quest Meta -->
+                    <div class="quest-meta-header">
+                        <span class="quest-badge-step">2단계 미션</span>
+                        <p id="questModalDesc">스팟 위치 인증 완료! 현장 맞춤 미션을 완료해 주세요.</p>
+                    </div>
+
+                    <!-- Option A: Quiz Panel -->
+                    <div class="quest-mode-panel" id="quizModePanel">
+                        <div class="quiz-question-box">
+                            <p id="quizQuestion">산천어에 관한 퀴즈 질문이 여기에 표시됩니다.</p>
+                        </div>
+                        <div class="quiz-options-list" id="quizOptionsList">
+                            <!-- Options buttons -->
+                        </div>
+                    </div>
+
+                    <!-- Option B: Photo verification Panel -->
+                    <div class="quest-mode-panel" id="photoModePanel">
+                        <div class="photo-upload-box">
+                            <i data-lucide="camera" class="camera-icon-big"></i>
+                            <p>현장에서 사진을 촬영하거나 선택해 인증해 주세요.</p>
+                            <input type="file" id="photoFileInput" style="display:none;" accept="image/*">
+                            <button class="btn btn-sm btn-glass" onclick="document.getElementById('photoFileInput').click()">사진 선택</button>
+                            <div class="photo-preview" id="photoPreviewContainer" style="display:none;">
+                                <img id="photoPreviewImg" src="" alt="preview">
+                            </div>
+                        </div>
+                        <div class="progress-bar-container" id="photoUploadProgress" style="display:none; margin-top: 15px;">
+                            <div class="progress-bar-fill" id="photoProgressFill" style="width:0%"></div>
+                            <span class="upload-percent" style="font-size: 11px; margin-top: 5px; display: block; text-align: center;">AI 사진 분석 중...</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="submitPhotoBtn" disabled style="margin-top: 15px;">인증 제출하기</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Stamp Stamped Celebration Overlay -->
+        <div class="modal-overlay" id="stampSuccessOverlay" style="z-index: 9999;">
+            <div class="stamp-celebration-card glass-card">
+                <div class="stamp-ink-animation">
+                    <div class="stamp-ink-circle">
+                        <i data-lucide="award"></i>
+                    </div>
+                </div>
+                <h2>스탬프 획득 완료!</h2>
+                <p id="stampSuccessSpotName">화천천 얼음낚시터</p>
+                <div class="points-reward-info">
+                    <i data-lucide="database"></i>
+                    <span>+500 P 적립 완료</span>
+                </div>
+                <button class="btn btn-primary" id="stampSuccessCloseBtn">확인</button>
+            </div>
+        </div>
+
+        <!-- 4. Ticket QR Code View Modal -->
+        <div class="modal-overlay" id="ticketModal">
+            <div class="modal-card ticket-qr-card glass-card">
+                <div class="ticket-top">
+                    <span class="ticket-badge">FESTGO 셔틀 탑승권</span>
+                    <h3 id="ticketModalRoute">서울 동서울 ➔ 화천 축제장</h3>
+                    <p id="ticketModalDate">2026년 6월 25일 08:00 출발</p>
+                </div>
+                <div class="ticket-divider">
+                    <div class="cutout-left"></div>
+                    <div class="cutout-right"></div>
+                </div>
+                <div class="ticket-bottom">
+                    <div class="qr-code-box">
+                        <i data-lucide="qr-code" class="qr-icon-big"></i>
+                    </div>
+                    <div class="ticket-meta">
+                        <div>
+                            <span>좌석</span>
+                            <strong id="ticketModalSeat">7번</strong>
+                        </div>
+                        <div>
+                            <span>탑승 상태</span>
+                            <strong class="status-active">탑승 대기</strong>
+                        </div>
+                    </div>
+                    <p class="qr-notice">차량 탑승 시 단말기에 QR코드를 태그해 주세요.</p>
+                    <button class="btn btn-glass btn-block" id="closeTicketModalBtn">닫기</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 5. Nationwide Festival Map Modal -->
+        <div class="modal-overlay" id="nationwideMapModal">
+            <div class="modal-card nationwide-map-card glass-card" style="height: 600px; padding: 0;">
+                <div class="modal-header">
+                    <h3><i data-lucide="globe"></i> 전국 축제 지도</h3>
+                    <button class="modal-close-btn" id="closeNationwideMapBtn"><i data-lucide="x"></i></button>
+                </div>
+                <div class="modal-body" style="padding: 0; position: relative; height: 530px; display: flex; flex-direction: column;">
+                    <div id="nationwideMap" style="width: 100%; height: 100%; z-index: 1;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Level Up Celebration Overlay -->
+        <div class="modal-overlay" id="levelUpOverlay" style="z-index: 10000;">
+            <div class="level-up-card glass-card text-center" style="width: 300px; padding: 30px 20px;">
+                <div class="level-up-sparkle" style="width: 70px; height: 70px; background: rgba(168,85,247,0.1); border: 2px solid #a855f7; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; color: #a855f7; margin-bottom: 20px;">
+                    <i data-lucide="chevrons-up" class="lvl-up-icon" style="width:36px; height:36px;"></i>
+                </div>
+                <h1 class="level-up-title" style="font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px;">LEVEL UP!</h1>
+                <p style="font-size: 12px; color: #475569; margin-bottom: 15px;">모험가 레벨이 상승했습니다!</p>
+                <div class="level-badge-large" id="levelUpBadge" style="font-size: 18px; font-weight: 800; color: white; background: #a855f7; padding: 4px 14px; border-radius: 50px; display: inline-block; margin-bottom: 10px;">LV.2</div>
+                <div class="level-up-desc" id="levelUpClass" style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">숙련된 탐험가</div>
+                <button class="btn btn-primary btn-block" id="levelUpCloseBtn">계속 모험하기</button>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast-wrapper" id="toastContainer"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Inline Scripts will replace this -->
+    <script src="festa.js"></script>
+</body>
+</html>

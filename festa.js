@@ -94,7 +94,8 @@ const rewardsData = [
         id: 'gift_card_5000',
         title: '화천사랑상품권 모바일 교환권 (5,000원권)',
         price: 1000,
-        img: 'https://images.unsplash.com/photo-1598432439360-5a3d76326cd6?auto=format&fit=crop&q=80&w=300',
+    
+        img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/coffee.jpeg?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',
         desc: '화천군 관내 가맹점에서 현금처럼 편리하게 사용할 수 있는 상품권입니다.'
     },

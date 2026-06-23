@@ -94,7 +94,7 @@ const rewardsData = [
         id: 'gift_card_5000',
         title: '화천사랑상품권 모바일 교환권 (5,000원권)',
         price: 1000,
-        img: 'https://images.unsplash.com/photo-1598432439360-5a3d76326cd6?auto=format&fit=crop&q=80&w=300',
+        img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/money.jpg?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',
         desc: '화천군 관내 가맹점에서 현금처럼 편리하게 사용할 수 있는 상품권입니다.'
     },
@@ -107,20 +107,20 @@ const rewardsData = [
         desc: '셔틀 예약 결제 시 적용할 수 있는 예약 전용 3천원권 모바일 할인권입니다.'
     },
     {
-        id: 'starbucks_americano',
-        title: '스타벅스 카페 아메리카노 Tall 기프티콘',
+        id: 'twosome_americano',
+        title: '투썸플레이스 아메리카노 Tall 기프티콘',
         price: 1200,
-        img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=300',
+        img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/coffee.jpeg?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'coffee',
-        desc: '스타벅스 매장에서 사용 가능한 아메리카노 모바일 쿠폰입니다.'
+        desc: '투썸플레이스 매장에서 사용 가능한 아메리카노 모바일 쿠폰입니다.'
     },
     {
         id: 'local_rice_10k',
-        title: '청정 화천 오대쌀 4kg 교환권',
+        title: '화천 물빛누리쌀 10kg 교환권',
         price: 3000,
-        img: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=300',
+        img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/rice.png?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',
-        desc: '화천 명품 특산품 협동조합에서 직송되는 유기농 친환경 오대쌀입니다.'
+        desc: '화천 명품 특산품 협동조합에서 직송되는 유기농 친환경 물빛누리쌀입니다.'
     }
 ];
 

@@ -324,9 +324,9 @@ function renderQuests() {
         const step2Class = q.completed ? 'done' : '';
         
         // Quest RPG Type
-        let questType = '⚔️ 탐색';
-        if (q.id === 'fishing') questType = '🎣 수렵';
-        if (q.id === 'plaza') questType = '🧠 지혜';
+        let questType = '📸 인증';
+        if (q.id === 'fishing') questType = '🎣 체험';
+        if (q.id === 'plaza') questType = '🧩 퀴즈';
 
         card.innerHTML = `
             <div class="rpg-rank-badge rank-${q.rank.toLowerCase()}">${q.rank}-RANK</div>

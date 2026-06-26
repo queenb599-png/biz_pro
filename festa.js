@@ -10,7 +10,7 @@ let appState = {
     quests: [
         {
             id: 'fishing',
-            title: '산천어 얼음낚시 퀘스트 🎣',
+            title: '산천어 얼음낚시 퀘스트',
             spotName: '화천천 얼음낚시터',
             coords: [38.1062, 127.7031],
             pointsReward: 500,
@@ -33,7 +33,7 @@ let appState = {
         },
         {
             id: 'lantern',
-            title: '선등거리 야경 인증 퀘스트 🏮',
+            title: '선등거리 야경 인증 퀘스트',
             spotName: '선등거리 회전교차로',
             coords: [38.1054, 127.7071],
             pointsReward: 500,
@@ -46,7 +46,7 @@ let appState = {
         },
         {
             id: 'plaza',
-            title: '실내얼음조각광장 관람 퀘스트 ❄️',
+            title: '실내얼음조각광장 관람 퀘스트',
             spotName: '실내얼음조각광장',
             coords: [38.1082, 127.7025],
             pointsReward: 500,

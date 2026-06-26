@@ -335,7 +335,7 @@ function renderQuests() {
         else if (q.rank === 'B') stars = '⭐';
 
         card.innerHTML = `
-            <div class="rpg-rank-badge rank-${q.rank.toLowerCase()}">${stars}</div>
+            <div class="rpg-rank-badge rank-${q.rank.toLowerCase()}">난이도: ${stars}</div>
             <div class="quest-card-header" style="padding-right: 50px;">
                 <div class="quest-title-box">
                     <h4 style="display:flex; align-items:center; gap: 4px;">

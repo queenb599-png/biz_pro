@@ -1055,6 +1055,7 @@ function setupEventListeners() {
     document.getElementById('closeQuestBtn').onclick = () => closeModal('questModal');
     document.getElementById('closeBookingBtn1').onclick = closeBookingWizard;
     document.getElementById('closeTicketModalBtn').onclick = () => closeModal('ticketModal');
+    document.getElementById('closeTicketModalBtnX').onclick = () => closeModal('ticketModal');
     document.getElementById('closeNationwideMapBtn').onclick = () => closeModal('nationwideMapModal');
     
     // Level Up Dismiss

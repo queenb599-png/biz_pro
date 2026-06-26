@@ -4,7 +4,7 @@ import os
 
 # 페이지 기본 설정 (타이틀 및 레이아웃)
 st.set_page_config(
-    page_title="Festamp - 전국 축제 스탬프 투어 & 셔틀버스 예약",
+    page_title="FestPIN - 전국 축제 스탬프 투어 & 셔틀버스 예약",
     page_icon="🗺️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -24,11 +24,27 @@ st.markdown("""
         max-width: 100%;
         display: flex;
         justify-content: center;
+        height: 100vh;
+        box-sizing: border-box;
     }
     iframe {
+        width: 100% !important;
+        height: 95vh !important;
+        max-width: 410px;
         border: none;
         border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+    @media (max-width: 480px) {
+        .block-container {
+            padding: 0 !important;
+        }
+        iframe {
+            max-width: 100% !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)

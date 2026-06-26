@@ -100,7 +100,7 @@ const rewardsData = [
     },
     {
         id: 'bus_coupon_3000',
-        title: 'FestGO 직통 셔틀버스 할인권 (3,000원권)',
+        title: '셔틀버스 할인권 (3,000원권)',
         price: 500,
         img: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=300',
         category: 'bus',

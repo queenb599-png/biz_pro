@@ -351,9 +351,9 @@ function renderQuests() {
                 </div>
                 <div class="quest-card-actions">
                     <div class="quest-reward-row">
-                        <div class="quest-reward-pts" title="골드 골드">
+                        <div class="quest-reward-pts" title="포인트">
                             <i data-lucide="database"></i>
-                            <span>+${q.pointsReward} G</span>
+                            <span>+${q.pointsReward} P</span>
                         </div>
                         <div class="quest-reward-xp" title="경험치">
                             <i data-lucide="chevrons-up"></i>
@@ -1015,7 +1015,7 @@ function exchangeReward(rewardId) {
         return;
     }
 
-    if (confirm(`[${r.title}] 상품을 교환하시겠습니까?\n소모 포인트: ${r.price} G`)) {
+    if (confirm(`[${r.title}] 상품을 교환하시겠습니까?\n소모 포인트: ${r.price} P`)) {
         appState.points -= r.price;
         
         const now = new Date();

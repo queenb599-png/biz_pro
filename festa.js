@@ -15,7 +15,7 @@ let appState = {
             coords: [38.1062, 127.7031],
             pointsReward: 500,
             xpReward: 100,
-            rank: '⭐⭐',
+            rank: 'A',
             completed: false,
             gpsVerified: false,
             mode: 'quiz',
@@ -38,7 +38,7 @@ let appState = {
             coords: [38.1054, 127.7071],
             pointsReward: 500,
             xpReward: 100,
-            rank: '⭐',
+            rank: 'B',
             completed: false,
             gpsVerified: false,
             mode: 'photo',
@@ -51,7 +51,7 @@ let appState = {
             coords: [38.1082, 127.7025],
             pointsReward: 500,
             xpReward: 100,
-            rank: '⭐⭐⭐',
+            rank: 'S',
             completed: false,
             gpsVerified: false,
             mode: 'quiz',
@@ -328,8 +328,14 @@ function renderQuests() {
         if (q.id === 'fishing') questType = '🎣 체험';
         if (q.id === 'plaza') questType = '🧩 퀴즈';
 
+        // 난이도 별 표시 설정
+        let stars = '';
+        if (q.rank === 'S') stars = '⭐⭐⭐';
+        else if (q.rank === 'A') stars = '⭐⭐';
+        else if (q.rank === 'B') stars = '⭐';
+
         card.innerHTML = `
-            <div class="rpg-rank-badge rank-${q.rank.toLowerCase()}">${q.rank}-RANK</div>
+            <div class="rpg-rank-badge rank-${q.rank.toLowerCase()}">${stars}</div>
             <div class="quest-card-header" style="padding-right: 50px;">
                 <div class="quest-title-box">
                     <h4 style="display:flex; align-items:center; gap: 4px;">

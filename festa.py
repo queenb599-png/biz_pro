@@ -4,7 +4,7 @@ import os
 
 # 페이지 기본 설정 (타이틀 및 레이아웃)
 st.set_page_config(
-    page_title="FestGO - 전국 축제 스탬프 투어 & 셔틀버스 예약",
+    page_title="Festamp - 전국 축제 스탬프 투어 & 셔틀버스 예약",
     page_icon="🗺️",
     layout="wide",
     initial_sidebar_state="collapsed"

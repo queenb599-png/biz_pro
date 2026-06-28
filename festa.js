@@ -92,7 +92,7 @@ const nationwideFestivals = [
 const rewardsData = [
     {
         id: 'gift_card_5000',
-        title: '화천사랑상품권 모바일 교환권 (5,000원권)',
+        title: '화천사랑상품권 모바일  교환권 (5,000원권)',
         price: 1000,
         img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/money.jpg?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',
@@ -116,7 +116,7 @@ const rewardsData = [
     },
     {
         id: 'local_rice_10k',
-        title: '화천 물빛누리쌀 10kg 교환권',
+        title: '화천 물빛누리쌀 10kg  교환권',
         price: 3000,
         img: 'https://github.com/queenb599-png/biz_pro/blob/main/festa/rice.png?raw=true&auto=format&fit=crop&q=80&w=300',
         category: 'local',

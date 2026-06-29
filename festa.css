@@ -1988,6 +1988,66 @@ body {
     100% { transform: scale(1); opacity: 1; }
 }
 
+/* Local Love Vacation Receipt Styles */
+.receipts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.receipt-row-item {
+    display: flex;
+    background: rgba(0, 0, 0, 0.01);
+    border: 1px dashed var(--border-glass);
+    border-radius: 8px;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.receipt-left h5 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+.receipt-left p {
+    font-size: 9px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+.receipt-left .receipt-amount {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2px;
+    font-size: 10px;
+}
+.receipt-left .receipt-reward {
+    font-size: 8px;
+    color: var(--success);
+    font-weight: 700;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.receipt-right {
+    display: flex;
+    align-items: center;
+}
+.receipt-status-badge {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+.badge-pending {
+    background: rgba(245, 158, 11, 0.08);
+    color: #d97706;
+}
+.badge-approved {
+    background: rgba(16, 185, 129, 0.08);
+    color: #059669;
+}
+
 @media (max-width: 480px) {
     .phone-frame {
         max-width: 100%;

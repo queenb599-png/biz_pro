@@ -1199,6 +1199,7 @@ function setupEventListeners() {
     document.getElementById('closeBookingBtn1').onclick = closeBookingWizard;
     document.getElementById('closeTicketModalBtn').onclick = () => closeModal('ticketModal');
     document.getElementById('closeTicketModalBtnX').onclick = () => closeModal('ticketModal');
+    document.getElementById('closeTicketModalBtnX').onclick = () => closeModal('ticketModal');
     document.getElementById('closeNationwideMapBtn').onclick = () => closeModal('nationwideMapModal');
 
     // Receipt Modal Event Handlers

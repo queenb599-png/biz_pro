@@ -70,6 +70,7 @@ let appState = {
     ],
     bookedTickets: [],
     coupons: [],
+    receipts: [],
     // Simulation Coordinate presets
     coordsPreset: {
         'user-default': [38.1025, 127.6980],
@@ -297,6 +298,7 @@ function updateUI() {
     renderMyPageStamps();
     renderBookedTickets();
     renderCoupons();
+    renderReceipts();
 }
 
 // Render RPG Quests list
@@ -490,6 +492,42 @@ function renderCoupons() {
             </div>
             <div class="coupon-right">
                 <span>사용가능</span>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+function renderReceipts() {
+    const container = document.getElementById('myReceiptsList');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    if (appState.receipts.length === 0) {
+        container.innerHTML = `
+            <div class="empty-receipts" style="text-align: center; padding: 15px 10px;">
+                <p style="font-size: 11px; color: var(--text-secondary);">인증된 영수증 내역이 없습니다.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    appState.receipts.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'receipt-row-item';
+        
+        const statusText = r.status === 'approved' ? '인증 완료' : '인증 대기';
+        const badgeClass = r.status === 'approved' ? 'badge-approved' : 'badge-pending';
+        
+        item.innerHTML = `
+            <div class="receipt-left">
+                <h5>${r.shopName}</h5>
+                <p>이용일자: ${r.date}</p>
+                <div class="receipt-amount">${r.amount.toLocaleString()}원</div>
+                <div class="receipt-reward">+${r.pointsReward} P | +${r.xpReward} XP</div>
+            </div>
+            <div class="receipt-right">
+                <span class="receipt-status-badge ${badgeClass}">${statusText}</span>
             </div>
         `;
         container.appendChild(item);
@@ -747,6 +785,105 @@ function submitPhotoVerification() {
             setTimeout(() => {
                 closeModal('questModal');
                 completeQuest(currentQuestExecuting.id);
+            }, 500);
+        }
+    }, 150);
+}
+
+function openReceiptModal() {
+    playGameSound('click');
+    
+    // Reset receipt inputs
+    document.getElementById('receiptShopName').value = '';
+    document.getElementById('receiptAmount').value = '';
+    
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('receiptDate').value = `${yyyy}-${mm}-${dd}`;
+    
+    document.getElementById('receiptFileInput').value = '';
+    document.getElementById('receiptPreviewContainer').style.display = 'none';
+    document.getElementById('receiptPreviewImg').src = '';
+    document.getElementById('receiptUploadProgress').style.display = 'none';
+    document.getElementById('receiptProgressFill').style.width = '0%';
+    
+    document.getElementById('submitReceiptBtn').disabled = true;
+    
+    document.getElementById('receiptModal').classList.add('active');
+}
+function handleReceiptPhotoUpload() {
+    const input = document.getElementById('receiptFileInput');
+    if (!input.files || !input.files[0]) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('receiptPreviewImg').src = e.target.result;
+        document.getElementById('receiptPreviewContainer').style.display = 'block';
+        validateReceiptForm();
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+function validateReceiptForm() {
+    const shopName = document.getElementById('receiptShopName').value.trim();
+    const amount = document.getElementById('receiptAmount').value.trim();
+    const date = document.getElementById('receiptDate').value;
+    const fileInput = document.getElementById('receiptFileInput');
+    const hasPhoto = fileInput.files && fileInput.files[0];
+    
+    const isValid = shopName && amount && date && hasPhoto;
+    document.getElementById('submitReceiptBtn').disabled = !isValid;
+}
+function submitReceiptVerification() {
+    playGameSound('click');
+    
+    const submitBtn = document.getElementById('submitReceiptBtn');
+    submitBtn.disabled = true;
+    
+    const progressContainer = document.getElementById('receiptUploadProgress');
+    const fill = document.getElementById('receiptProgressFill');
+    progressContainer.style.display = 'block';
+    
+    let width = 0;
+    const interval = setInterval(() => {
+        width += 10;
+        fill.style.width = `${width}%`;
+        
+        if (width >= 100) {
+            clearInterval(interval);
+            
+            setTimeout(() => {
+                const shopName = document.getElementById('receiptShopName').value.trim();
+                const amount = parseInt(document.getElementById('receiptAmount').value) || 0;
+                const date = document.getElementById('receiptDate').value;
+                
+                // Add receipt
+                const pointsReward = 1000;
+                const xpReward = 200;
+                
+                appState.receipts.push({
+                    id: 'receipt_' + Date.now(),
+                    shopName: shopName,
+                    amount: amount,
+                    date: date,
+                    status: 'approved',
+                    pointsReward: pointsReward,
+                    xpReward: xpReward
+                });
+                
+                // Add rewards
+                appState.points += pointsReward;
+                
+                closeModal('receiptModal');
+                
+                playGameSound('fanfare');
+                showToast(`🎉 영수증 인증 성공! ${pointsReward} P와 ${xpReward} XP가 지급되었습니다.`, 'success');
+                
+                addXP(xpReward);
+                saveState();
+                updateUI();
+                
             }, 500);
         }
     }, 150);
@@ -1063,6 +1200,16 @@ function setupEventListeners() {
     document.getElementById('closeTicketModalBtn').onclick = () => closeModal('ticketModal');
     document.getElementById('closeTicketModalBtnX').onclick = () => closeModal('ticketModal');
     document.getElementById('closeNationwideMapBtn').onclick = () => closeModal('nationwideMapModal');
+
+    // Receipt Modal Event Handlers
+    document.getElementById('openReceiptUploadBtn').onclick = openReceiptModal;
+    document.getElementById('closeReceiptModalBtn').onclick = () => closeModal('receiptModal');
+    document.getElementById('receiptFileInput').onchange = handleReceiptPhotoUpload;
+    document.getElementById('submitReceiptBtn').onclick = submitReceiptVerification;
+    
+    document.getElementById('receiptShopName').oninput = validateReceiptForm;
+    document.getElementById('receiptAmount').oninput = validateReceiptForm;
+    document.getElementById('receiptDate').onchange = validateReceiptForm;
     
     // Level Up Dismiss
     document.getElementById('levelUpCloseBtn').onclick = () => {
